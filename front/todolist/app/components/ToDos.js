@@ -1,8 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import ApiRequests from "../api"
 
-const ToDos = async(props) =>{
+const ToDos = (props) =>{
     const apiRequest = new ApiRequests
     const onCheck= (evt) =>{
         apiRequest.toggleCheckbox(evt.target.name, evt.target.checked)
@@ -15,10 +16,26 @@ const ToDos = async(props) =>{
             return <td><input type= "checkbox" name = { task } onChange={ onCheck } ></input></td>
         }
     }
-    const onClick = (evt) => {
+
+
+    const onClickDelete = (evt) => {
         const deleted = evt.target.name
         console.log(deleted)
         apiRequest.deleteTask(deleted)
+        location.reload()
+    }
+
+
+
+    const [edit, setEdit] = useState("")
+    const onChangeEdit = (evt) =>{
+        setEdit(evt.target.value)
+    }
+
+    const onClickUpdate = (evt) => {
+        console.log(evt.target.name)
+        console.log(edit)
+        apiRequest.updateTask(evt.target.name, edit)
         location.reload()
     }
     return(
@@ -30,6 +47,7 @@ const ToDos = async(props) =>{
         <th>Task</th>
         <th>Check</th>
         <th>Delete</th>
+        <th>Edit</th>
       </tr>
     </thead>
     <tbody>
@@ -37,7 +55,8 @@ const ToDos = async(props) =>{
             <tr key = {task.task}>
                 <td>{task.task}</td>
                 {check(task.isChecked, task.task)}
-                <td><button name = {task.task} onClick={ onClick }>X</button></td>
+                <td><button name = {task.task} onClick={ onClickDelete }> X </button></td>
+                <td><input type= "text"  onChange = { onChangeEdit }></input><button name = {task.task} onClick = {  onClickUpdate  }>🖊️</button></td>
             </tr>
         ))}
     </tbody>

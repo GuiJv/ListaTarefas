@@ -46,6 +46,7 @@ app.delete('/:taskdel', jsonParser ,(req, res) =>{
 })
 
 app.put('/:taskup', jsonParser ,(req,res) => {
+    console.log("Put Request Made : Edit")
     const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
     const tasks = files.map((task => {
         return task.task
@@ -63,7 +64,7 @@ app.put('/:taskup', jsonParser ,(req,res) => {
 })
 
 app.put('/:taskCheck/toggle', jsonParser,(req,res) =>{
-    console.log("Put Request Made")
+    console.log("Put Request Made : Toggle")
     const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
     const tasks = files.map((task => {
         return task.task

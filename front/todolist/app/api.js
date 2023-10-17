@@ -47,5 +47,17 @@ class ApiRequests{
             body : JSONisChecked
         })
     }
+
+    async updateTask(task, taskEdtion){
+        const JSONtask = JSON.stringify({task: taskEdtion})
+        const response = await fetch(`http://localhost:3002/${task}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-type' : 'application/json'
+            },
+            body : JSONtask
+        })
+    }
 }
   export default ApiRequests
