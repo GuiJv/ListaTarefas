@@ -1,7 +1,8 @@
-import getAllToDos from "../api"
+import ApiRequests from "../api"
 
 const ToDos = async() =>{
-    const body = await getAllToDos()
+    const apiRequest = new ApiRequests
+    const body = await apiRequest.getAllToDos()
     return(
         <div>
   <table>

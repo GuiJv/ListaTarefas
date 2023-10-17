@@ -12,12 +12,13 @@ app.use(cors())
 
 app.get('/', (req, res) =>{
     const filesJson = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
-    console.log("Request made")
+    console.log("Get Request made")
     res.status(202)
     res.send(filesJson)
 })
 
 app.post('/', jsonParser ,(req, res) =>{
+    console.log("Post Request Made")
     const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
     files.push(req.body)
     fs.writeFileSync('taskDB/tasks.json', JSON.stringify(files))
