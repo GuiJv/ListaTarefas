@@ -27,6 +27,7 @@ app.post('/', jsonParser ,(req, res) =>{
 })
 
 app.delete('/:taskdel', jsonParser ,(req, res) =>{
+    console.log("Delete request Made")
     const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
     const tasks = files.map((task => {
         return task.task
