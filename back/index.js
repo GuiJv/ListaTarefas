@@ -20,6 +20,7 @@ app.get('/', (req, res) =>{
 app.post('/', jsonParser ,(req, res) =>{
     console.log("Post Request Made")
     const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
+    req.body.isChecked = false
     files.push(req.body)
     fs.writeFileSync('taskDB/tasks.json', JSON.stringify(files))
     res.status(200)
@@ -55,6 +56,28 @@ app.put('/:taskup', jsonParser ,(req,res) => {
         res.json("file not found")
     }else{
         files[index].task = req.body.task
+        res.status(200)
+        res.json("ok")
+    }
+    fs.writeFileSync('taskDB/tasks.json', JSON.stringify(files))
+})
+
+app.put('/:taskCheck/toggle', jsonParser,(req,res) =>{
+    console.log("Put Request Made")
+    const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
+    const tasks = files.map((task => {
+        return task.task
+    }))
+    const index = tasks.indexOf(req.params.taskCheck)
+    if(index == -1){
+        res.status(404)
+        res.json("file not found")
+    }else if(req.body.checkbox){
+        files[index].isChecked = false
+        res.status(200)
+        res.json("ok")
+    }else{
+        files[index].isChecked = true
         res.status(200)
         res.json("ok")
     }
