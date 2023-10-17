@@ -1,3 +1,4 @@
+const cors = require('cors')
 const fs = require('fs')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -5,23 +6,27 @@ const bodyParser = require('body-parser')
 const app = express()
 const jsonParser = bodyParser.json();
 
-const port = 3001
+const port = 3002
+
+app.use(cors())
 
 app.get('/', (req, res) =>{
-    const filesJson = JSON.parse(fs.readFileSync('back/taskDB/tasks.json', 'utf-8'))
+    const filesJson = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
+    console.log("Request made")
+    res.status(202)
     res.send(filesJson)
 })
 
 app.post('/', jsonParser ,(req, res) =>{
-    const files = JSON.parse(fs.readFileSync('back/taskDB/tasks.json', 'utf-8'))
+    const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
     files.push(req.body)
-    fs.writeFileSync('back/taskDB/tasks.json', JSON.stringify(files))
+    fs.writeFileSync('taskDB/tasks.json', JSON.stringify(files))
     res.status(200)
     res.json("ok")
 })
 
 app.delete('/:taskdel', jsonParser ,(req, res) =>{
-    const files = JSON.parse(fs.readFileSync('back/taskDB/tasks.json', 'utf-8'))
+    const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
     const tasks = files.map((task => {
         return task.task
     }))
@@ -31,14 +36,14 @@ app.delete('/:taskdel', jsonParser ,(req, res) =>{
         res.json("file not found")
     }else{
         files.splice(index,1)
-        fs.writeFileSync('back/taskDB/tasks.json', JSON.stringify(files))
+        fs.writeFileSync('taskDB/tasks.json', JSON.stringify(files))
         res.status(200)
         res.json("ok")
     }
 })
 
 app.put('/:taskup', jsonParser ,(req,res) => {
-    const files = JSON.parse(fs.readFileSync('back/taskDB/tasks.json', 'utf-8'))
+    const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
     const tasks = files.map((task => {
         return task.task
     }))
@@ -51,7 +56,7 @@ app.put('/:taskup', jsonParser ,(req,res) => {
         res.status(200)
         res.json("ok")
     }
-    fs.writeFileSync('back/taskDB/tasks.json', JSON.stringify(files))
+    fs.writeFileSync('taskDB/tasks.json', JSON.stringify(files))
 })
 
 app.listen(port, ()=>{

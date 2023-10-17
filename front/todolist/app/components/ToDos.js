@@ -1,4 +1,7 @@
-const ToDos = () =>{
+import getAllToDos from "../api"
+
+const ToDos = async() =>{
+    const body = await getAllToDos()
     return(
         <div>
   <table>
@@ -10,12 +13,12 @@ const ToDos = () =>{
       </tr>
     </thead>
     <tbody>
-      {/* row 1 */}
-      <tr>
-        <td>Jump</td>
-        <td><input type="checkbox"></input></td>
-      </tr>
-      {/* row 2 */}
+        {body.map(task => (
+            <tr>
+                <td>{task.task}</td>
+                <td><input type= "checkbox"></input></td>
+            </tr>
+        ))}
     </tbody>
   </table>
 </div>
