@@ -37,6 +37,23 @@ app.delete('/:taskdel', jsonParser ,(req, res) =>{
     }
 })
 
+app.put('/:taskup', jsonParser ,(req,res) => {
+    const files = JSON.parse(fs.readFileSync('back/taskDB/tasks.json', 'utf-8'))
+    const tasks = files.map((task => {
+        return task.task
+    }))
+    const index = tasks.indexOf(req.params.taskup)
+    if(index == -1){
+        res.status(404)
+        res.json("file not found")
+    }else{
+        files[index].task = req.body.task
+        res.status(200)
+        res.json("ok")
+    }
+    fs.writeFileSync('back/taskDB/tasks.json', JSON.stringify(files))
+})
+
 app.listen(port, ()=>{
     console.log(`Escutando porta ${port}`)
 })
