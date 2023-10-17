@@ -3,17 +3,21 @@
 import ApiRequests from "../api"
 
 const ToDos = async(props) =>{
-    const check = (isChecked) => {
+    const apiRequest = new ApiRequests
+    const onCheck= (evt) =>{
+        apiRequest.toggleCheckbox(evt.target.name, evt.target.checked)
+    }
+
+    const check = (isChecked, task) => {
         if(isChecked){
-            return <td><input type= "checkbox" checked></input></td>
+            return <td><input type= "checkbox" name = { task } onChange={ onCheck } defaultChecked></input></td>
         }else{
-            return <td><input type= "checkbox"></input></td>
+            return <td><input type= "checkbox" name = { task } onChange={ onCheck } ></input></td>
         }
     }
     const onClick = (evt) => {
         const deleted = evt.target.name
         console.log(deleted)
-        const apiRequest = new ApiRequests
         apiRequest.deleteTask(deleted)
         location.reload()
     }
@@ -32,7 +36,7 @@ const ToDos = async(props) =>{
         {props.body.map(task => (
             <tr key = {task.task}>
                 <td>{task.task}</td>
-                {check(task.isChecked)}
+                {check(task.isChecked, task.task)}
                 <td><button name = {task.task} onClick={ onClick }>X</button></td>
             </tr>
         ))}

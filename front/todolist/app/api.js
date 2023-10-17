@@ -35,5 +35,17 @@ class ApiRequests{
             }
         })
     }
+
+    async toggleCheckbox(task, isChecked){
+        const JSONisChecked = JSON.stringify({isChecked: isChecked})
+        const response = await fetch(`http://localhost:3002/${task}/toggle`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-type' : 'application/json'
+            },
+            body : JSONisChecked
+        })
+    }
 }
   export default ApiRequests

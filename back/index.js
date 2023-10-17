@@ -72,12 +72,12 @@ app.put('/:taskCheck/toggle', jsonParser,(req,res) =>{
     if(index == -1){
         res.status(404)
         res.json("file not found")
-    }else if(req.body.checkbox){
-        files[index].isChecked = false
+    }else if(req.body.isChecked){
+        files[index].isChecked = true
         res.status(200)
         res.json("ok")
-    }else{
-        files[index].isChecked = true
+    }else if(!req.body.checkbox){
+        files[index].isChecked = false
         res.status(200)
         res.json("ok")
     }
