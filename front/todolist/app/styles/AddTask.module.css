@@ -9,3 +9,8 @@
     margin: 4px;
     border: 1px solid black;
 }
+
+.button:hover{
+    background-color: rgb(48, 126, 83);
+    cursor: pointer;
+}
