@@ -28,7 +28,7 @@ app.post('/', jsonParser ,(req, res) =>{
     try{
     console.log("Post Request Made")
     const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
-    if(utils.isEmpty(req.body.task)|| utils.maxLength(req.body.task, 49)){
+    if(utils.isEmpty(req.body.task) || utils.maxLength(req.body.task, 49) || utils.isType("string", req.body.task)){
         console.log("error")
         throw 'bad request'
 
@@ -80,7 +80,7 @@ app.put('/:taskup', jsonParser ,(req,res) => {
         res.status(404)
         res.json("file not found")
     }else{
-        if(utils.isEmpty(req.body.task) || utils.maxLength(req.body.task, 49)){
+        if(utils.isEmpty(req.body.task) || utils.maxLength(req.body.task, 49) || utils.isType("string", req.body.task)){
             console.log("error")
             throw 'bad request'
         }
@@ -103,6 +103,10 @@ app.put('/:taskCheck/toggle', jsonParser,(req,res) =>{
     const tasks = files.map((task => {
         return task.task
     }))
+    if(utils.isType("boolean", req.body.isChecked)){
+        throw 'bad request'
+
+    }
     const index = tasks.indexOf(req.params.taskCheck)
     if(index == -1){
         res.status(404)
@@ -111,7 +115,7 @@ app.put('/:taskCheck/toggle', jsonParser,(req,res) =>{
         files[index].isChecked = true
         res.status(200)
         res.json("ok")
-    }else if(!req.body.checkbox){
+    }else if(!req.body.isChecked){
         files[index].isChecked = false
         res.status(200)
         res.json("ok")

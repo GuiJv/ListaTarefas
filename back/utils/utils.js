@@ -7,6 +7,10 @@ class Utils{
     maxLength(value, max){
         return value.length > max;
     }
+
+    isType(type, value){
+        return type !== typeof value
+    }
 }
 
 module.exports = Utils
