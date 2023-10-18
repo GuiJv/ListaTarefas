@@ -19,7 +19,7 @@ const AddTasks = () =>{
     return(
         <div>
             <form>
-                <input type="text" name = "task" placeholder="Insert task" value= { task } onChange = {onChangeTask}></input>
+                <input type="text" name = "task" placeholder="Insert task" value= { task } onChange = {onChangeTask} maxLength={50} required></input>
                 <button type="submit" onClick={ onClick }>+</button>
             </form>
         </div>

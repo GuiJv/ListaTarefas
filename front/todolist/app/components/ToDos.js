@@ -56,7 +56,7 @@ const ToDos = (props) =>{
                 <td>{task.task}</td>
                 {check(task.isChecked, task.task)}
                 <td><button name = {task.task} onClick={ onClickDelete }> X </button></td>
-                <td><input type= "text"  onChange = { onChangeEdit }></input><button name = {task.task} onClick = {  onClickUpdate  }>🖊️</button></td>
+                <td><input type= "text"  onChange = { onChangeEdit } maxLength={50} required></input><button name = {task.task} onClick = {  onClickUpdate  }>🖊️</button></td>
             </tr>
         ))}
     </tbody>
