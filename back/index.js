@@ -105,7 +105,7 @@ app.put('/:taskCheck/toggle', jsonParser,(req,res) =>{
     }))
     if(utils.isType("boolean", req.body.isChecked)){
         throw 'bad request'
-
+        
     }
     const index = tasks.indexOf(req.params.taskCheck)
     if(index == -1){
