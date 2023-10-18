@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import ApiRequests from "../api"
+import styles from "../styles/ToDos.module.css"
 
 const ToDos = (props) =>{
     const apiRequest = new ApiRequests
@@ -40,7 +41,7 @@ const ToDos = (props) =>{
     }
     return(
         <div>
-  <table>
+  <table className= {styles.ToDos}>
     {/* head */}
     <thead>
       <tr>

@@ -2,6 +2,7 @@
 
 import ApiRequests from "../api"
 import { useState } from 'react'
+import styles from "../styles/AddTask.module.css"
 
 const AddTasks = () =>{
     const [task, setTask] = useState("")
@@ -19,8 +20,8 @@ const AddTasks = () =>{
     return(
         <div>
             <form>
-                <input type="text" name = "task" placeholder="Insert task" value= { task } onChange = {onChangeTask} maxLength={50} required></input>
-                <button type="submit" onClick={ onClick }>+</button>
+                <input className = { styles.addTask } type="text" name = "task" placeholder="Insert task" value= { task } onChange = {onChangeTask} maxLength={50} required></input>
+                <button className = { styles.button } type="submit" onClick={ onClick }>+</button>
             </form>
         </div>
     )

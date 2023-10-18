@@ -1,0 +1,35 @@
+.ToDos{
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+}
+
+.ToDos thead tr{
+    background-color: rgb(80, 216, 141);
+    text-align: left;
+    color: rgb(248, 248, 248);
+    font-weight: bold;
+}
+
+.ToDos th, .ToDos td {
+    padding: 12px 15px;
+}
+
+.ToDos tbody tr{
+    border-bottom: 1px solid #ddd;
+}
+
+.ToDos tbody tr:nth-of-type(odd){
+    border-bottom: 1px solid #ddd;
+    background-color: #f3f3f3;
+}
+
+.ToDos tbody tr:last-of-type{
+    border-bottom: 2px solid rgb(80, 216, 141);
+}
+
+.ToDos input{
+    margin-right: 5px;
+}
+
