@@ -1,9 +1,11 @@
 const Utils = require('./utils/utils')
+const JsonFileRepo = require('./repos/jsonFileRepo')
 const cors = require('cors')
 const fs = require('fs')
 const express = require('express')
 const bodyParser = require('body-parser')
 const utils = new Utils
+const repo = new JsonFileRepo
 const app = express()
 const jsonParser = bodyParser.json();
 
@@ -11,9 +13,9 @@ const port = 3002
 
 app.use(cors())
 
-app.get('/', (req, res) =>{
+app.get('/', jsonParser,(req, res) =>{
     try{
-    const filesJson = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
+    const filesJson = repo.readFile()
     console.log("Get Request made")
     res.status(202)
     res.send(filesJson)
@@ -24,18 +26,15 @@ app.get('/', (req, res) =>{
     }
 })
 
-app.post('/', jsonParser ,(req, res) =>{
+app.post('/',jsonParser,(req, res) =>{
     try{
     console.log("Post Request Made")
-    const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
     if(utils.isEmpty(req.body.task) || utils.maxLength(req.body.task, 49) || utils.isType("string", req.body.task)){
         console.log("error")
         throw 'bad request'
-
     }
     req.body.isChecked = false
-    files.push(req.body)
-    fs.writeFileSync('taskDB/tasks.json', JSON.stringify(files))
+    repo.writeFile(req.body)
     res.status(200)
     res.json("ok")
     } catch (e) {
@@ -45,10 +44,10 @@ app.post('/', jsonParser ,(req, res) =>{
     }
 })
 
-app.delete('/:taskdel', jsonParser ,(req, res) =>{
+app.delete('/:taskdel',jsonParser,(req, res) =>{
     try{
     console.log("Delete request Made")
-    const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
+    const files = repo.readFile()
     const tasks = files.map((task => {
         return task.task
     }))
@@ -57,8 +56,7 @@ app.delete('/:taskdel', jsonParser ,(req, res) =>{
         res.status(404)
         res.json("file not found")
     }else{
-        files.splice(index,1)
-        fs.writeFileSync('taskDB/tasks.json', JSON.stringify(files))
+        repo.deleteFile(index)
         res.status(200)
         res.json("ok")
     }} catch (e) {
@@ -68,27 +66,27 @@ app.delete('/:taskdel', jsonParser ,(req, res) =>{
     }
 })
 
-app.put('/:taskup', jsonParser ,(req,res) => {
+app.put('/:taskup',jsonParser,(req,res) => {
     try{
     console.log("Put Request Made : Edit")
-    const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
+    const files = repo.readFile()
     const tasks = files.map((task => {
         return task.task
     }))
     const index = tasks.indexOf(req.params.taskup)
     if(index == -1){
         res.status(404)
+        console.log("not found")
         res.json("file not found")
     }else{
         if(utils.isEmpty(req.body.task) || utils.maxLength(req.body.task, 49) || utils.isType("string", req.body.task)){
             console.log("error")
             throw 'bad request'
         }
-        files[index].task = req.body.task
+        repo.updateFile(index, req.body)
         res.status(200)
         res.json("ok")
     }
-    fs.writeFileSync('taskDB/tasks.json', JSON.stringify(files))
     }catch (e){
         console.log(e)
         res.status(400)
@@ -96,10 +94,10 @@ app.put('/:taskup', jsonParser ,(req,res) => {
     }
 })
 
-app.put('/:taskCheck/toggle', jsonParser,(req,res) =>{
+app.put('/:taskCheck/toggle',jsonParser,(req,res) =>{
     try{
     console.log("Put Request Made : Toggle")
-    const files = JSON.parse(fs.readFileSync('taskDB/tasks.json', 'utf-8'))
+    const files = repo.readFile()
     const tasks = files.map((task => {
         return task.task
     }))
@@ -112,15 +110,14 @@ app.put('/:taskCheck/toggle', jsonParser,(req,res) =>{
         res.status(404)
         res.json("file not found")
     }else if(req.body.isChecked){
-        files[index].isChecked = true
+        repo.updateCheckFile(index, true)
         res.status(200)
         res.json("ok")
     }else if(!req.body.isChecked){
-        files[index].isChecked = false
+        repo.updateCheckFile(index, false)
         res.status(200)
         res.json("ok")
     }
-    fs.writeFileSync('taskDB/tasks.json', JSON.stringify(files))
     } catch(e){
         console.log(e)
         res.status(400)

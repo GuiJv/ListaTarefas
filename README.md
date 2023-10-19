@@ -28,6 +28,7 @@ O Next.Js constroi toda a estrutura do front-end, que por sua vez manda requisi�
 - Aplicar TypeScript no código todo
 - Deixar a aparência ainda mais agradável com mais CSS
 - Otimizar o código
+- Adicionar repositorios diferentes como, MongoDB ou qualquer um que utilize SQL
 
 ## Contribuição
 
